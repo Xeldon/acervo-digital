@@ -15,6 +15,8 @@ Na coleta de 06/11/2026: **499 obras gratuitas** a partir dos 614 títulos da lo
 | `coletor/` | Script que monta o catálogo a partir do site da Livraria. Grava também `ultima-coleta.txt`, um relatório do que ficou de fora. |
 | `servidor/` | Servidor local para demonstrar o app no computador ou no celular. |
 | `.github/workflows/` | Publicação automática da pasta `app/` no GitHub Pages (HTTPS). |
+| `app/baixar/` | O APK do app Android, baixável pelo site. |
+| `pacote-android/` | Só neste computador (fora do Git): chave de assinatura e pacote para a Play Store. |
 
 Requisito único: [.NET 10 SDK](https://dotnet.microsoft.com/download) (os scripts `.cs` rodam direto, sem projeto).
 
@@ -83,6 +85,26 @@ catálogo, rode o coletor e envie de novo (`git commit -am "Atualiza catálogo" 
 
 **Versão oficial:** copiar a pasta `app/` para um servidor web do Senado com HTTPS. Não precisa de
 banco de dados nem de código no servidor.
+
+## App Android (APK)
+
+Download: **https://xeldon.github.io/acervo-digital/baixar/acervo-digital.apk** (cerca de 1 MB, Android 7 ou
+mais novo). Para instalar, o Android pede para permitir "instalar apps desta fonte".
+
+- **Como foi gerado:** pelo serviço gratuito do [PWABuilder](https://www.pwabuilder.com/) (Microsoft), a
+  partir do site publicado. É um app Android do tipo TWA: uma "casca" que abre o site no motor do Chrome, em
+  tela cheia. Pacote `io.github.xeldon.acervodigital`, versão 0.1.0 (código 1).
+- **Atualizações do site chegam sozinhas ao APK**, porque ele abre o site publicado. Só é preciso gerar um
+  APK novo para mudar o nome, o ícone ou as cores do app.
+- **Chave de assinatura:** está em `pacote-android/` (fora do Git, nunca publicar), junto com o `.aab` para
+  a Play Store e o arquivo com as senhas. Guarde uma cópia em lugar seguro: as próximas versões do APK
+  precisam ser assinadas com a mesma chave. A chave foi gerada pelo serviço do PWABuilder; para a versão
+  oficial, o Senado deve gerar a própria chave.
+- **Barra de endereço no topo:** aparece até o domínio confirmar que o app é dele. Para tirar, criar o
+  repositório público `xeldon.github.io` com o arquivo `.well-known/assetlinks.json` (cópia em
+  `pacote-android/conteudo/assetlinks.json`) e um arquivo vazio `.nojekyll`.
+- **Gerar de novo** (nova versão): em pwabuilder.com, informar o endereço do app, *Package for stores ›
+  Android*, aumentar a versão e escolher *Use mine* com a chave de `pacote-android/`.
 
 ## O que o app faz
 

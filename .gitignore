@@ -3,3 +3,5 @@ obj/
 .vs/
 .claude/
 *-relatorio.txt
+# Pacote Android com a chave de assinatura: nunca publicar
+pacote-android/
