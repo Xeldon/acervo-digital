@@ -122,6 +122,17 @@ pausa entre elas, e não baixa nenhum PDF.
   navegador oferece o download. Se o download for cancelado, a aba fica parada em "Conexão verificada",
   porque o redirecionamento era o próprio PDF. Em Chrome, Edge e Safari o PDF abre direto. O app avisa o
   usuário sobre isso ao tocar em *Ler PDF*.
+- **PDFs grandes são baixados em vez de abrir no navegador**, inclusive no Chrome do celular. Exemplo:
+  *Autobiografia: Visconde de Mauá* (20,7 MB) baixa; *Autobiografia de C. B. Ottoni* (1,8 MB), o CPC
+  (2,6 MB) e o Código Civil (3,2 MB) abrem. Causa provável: a BDSF roda em DSpace, que por padrão envia
+  arquivos acima de 8 MB com `Content-Disposition: attachment` (configuração
+  `content_disposition_threshold`). Não deu para confirmar pelo cabeçalho, porque a verificação anti-robô
+  bloqueia consultas automáticas, inclusive OAI-PMH, REST e METS. O arquivo vai para *Downloads* e abre pela
+  notificação de download. Se o Chrome perguntar "baixar novamente?", é porque o arquivo já está lá.
+  - O app não tem como resolver isso sozinho. Um intermediário (proxy, cópia dos arquivos ou visualizador
+    externo como o do Google) precisaria passar pela verificação de forma automatizada.
+  - Também não dá para avisar antes quais obras serão baixadas: nem a Livraria nem o coletor têm acesso ao
+    tamanho dos arquivos.
 - **Instalar e usar offline exige HTTPS.** Pela rede local (`http://192.168...`) o app funciona, mas o
   celular não oferece a instalação. Ver *Publicar em HTTPS*.
 - **O catálogo é um retrato** do momento da coleta. É preciso rodar o coletor de tempos em tempos.
@@ -132,16 +143,21 @@ pausa entre elas, e não baixa nenhum PDF.
 1. **Fonte de dados oficial**: expor na API REST o campo customizado (ACF) que guarda o link digital
    (`show_in_rest`) ou padronizar o atributo `LINK PDF` em todos os produtos. Aí o app lê a API direto, sem
    raspar páginas, e fica sempre atualizado.
-2. **Leitor dentro do app**: liberar CORS para o domínio do app nos arquivos da BDSF (e uma exceção na
+2. **PDFs grandes abrindo no navegador**: na BDSF, aumentar ou desligar o limite
+   `xmlui.content_disposition_threshold` no `dspace.cfg`. Pelo visual da página, a BDSF usa a interface
+   XMLUI; na JSPUI o nome é `webui.content_disposition_threshold`. Com isso todo PDF abre na tela, de
+   qualquer tamanho. É uma linha de configuração. Junto, informar o tamanho de cada arquivo (o DSpace já
+   guarda) para o app mostrar "PDF · 20,7 MB" e avisar quem usa o plano de dados do celular.
+3. **Leitor dentro do app**: liberar CORS para o domínio do app nos arquivos da BDSF (e uma exceção na
    verificação anti-robô). Isso permite um leitor embutido (PDF.js / leitor EPUB) com marcador de página,
    ajuste de fonte, modo noturno e leitura offline das obras baixadas. Mesmo sem o leitor embutido, fazer a
    liberação da verificação valer para o site todo (e não por arquivo) já tira a tela de espera de cada PDF.
-3. **Publicação**: hospedar em HTTPS num domínio do Senado. Para as lojas (Play Store / App Store),
+4. **Publicação**: hospedar em HTTPS num domínio do Senado. Para as lojas (Play Store / App Store),
    empacotar o mesmo código com Capacitor ou TWA, ou reescrever em React Native/Flutter usando o mesmo
    catálogo.
-4. **Dados extras** que a TI pode fornecer: tamanho do arquivo, nº de páginas, sumário, data de atualização
+5. **Dados extras** que a TI pode fornecer: tamanho do arquivo, nº de páginas, sumário, data de atualização
    e número de downloads (para uma vitrine "Mais baixados").
-5. **Ajustes no cadastro da loja** encontrados na coleta: produto com link só no atributo
+6. **Ajustes no cadastro da loja** encontrados na coleta: produto com link só no atributo
    ("Aliança dos Povos da Floresta"), categorias duplicadas, categorias que são assuntos (algumas com erro
    de digitação, como "Representação Proporcioanal" e "Desenvolvimento sutentável"), atributos com nomes
    diferentes ("Ano"/"ANO", "Edição"/"EDIÇÃO") e valores trocados (em "A Vida de Luiz Viana Filho" o campo
