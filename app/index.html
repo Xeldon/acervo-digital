@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b2a4a">
+  <meta name="description" content="Obras gratuitas da Livraria do Senado Federal para ler no celular.">
+  <!-- Protótipo: fora dos buscadores até virar serviço oficial. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Acervo Digital · Livraria do Senado</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icone.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Acervo Senado">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="css/estilo.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <div class="topo__barra">
+      <a class="marca" href="#/" aria-label="Acervo Digital, início">
+        <img class="marca__icone" src="icons/icone.svg" alt="" width="34" height="34">
+        <span class="marca__texto">
+          <strong>Acervo Digital <span class="selo">protótipo</span></strong>
+          <small>Livraria do Senado Federal</small>
+        </span>
+      </a>
+      <button class="topo__instalar" id="botao-instalar" type="button" hidden>Instalar</button>
+    </div>
+    <div class="faixa" aria-hidden="true"></div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <!-- Acervo: lista, busca e filtros -->
+    <section id="tela-acervo" class="tela" aria-labelledby="titulo-acervo">
+      <h1 id="titulo-acervo" class="sr-only">Acervo</h1>
+
+      <div class="busca">
+        <label class="busca__campo">
+          <svg class="icone" aria-hidden="true"><use href="#i-busca"/></svg>
+          <span class="sr-only">Buscar por título, autor, assunto ou ISBN</span>
+          <input id="campo-busca" type="search" placeholder="Buscar título, autor, assunto…" autocomplete="off" enterkeyhint="search">
+          <button class="busca__limpar" id="limpar-busca" type="button" aria-label="Limpar busca" hidden>
+            <svg class="icone" aria-hidden="true"><use href="#i-fechar"/></svg>
+          </button>
+        </label>
+      </div>
+
+      <div id="vitrines"></div>
+
+      <div class="secao">
+        <div class="chips" id="chips-categorias" role="group" aria-label="Categorias"></div>
+        <div class="barra-ferramentas">
+          <p class="contagem" id="contagem" aria-live="polite"></p>
+          <div class="seletores">
+            <label class="seletor">
+              <span class="sr-only">Formato</span>
+              <select id="filtro-formato">
+                <option value="todos">Todos os formatos</option>
+                <option value="pdf">Com PDF</option>
+                <option value="epub">Com EPUB</option>
+              </select>
+            </label>
+            <label class="seletor">
+              <span class="sr-only">Ordenar</span>
+              <select id="filtro-ordem">
+                <option value="titulo">A–Z</option>
+                <option value="recentes">Mais recentes</option>
+                <option value="antigos">Mais antigos</option>
+              </select>
+            </label>
+          </div>
+        </div>
+        <div class="grade" id="grade-obras"></div>
+        <div class="mais" id="sentinela" hidden>
+          <button class="botao" id="botao-mais" type="button">Mostrar mais obras</button>
+        </div>
+        <div class="vazio" id="vazio" hidden>
+          <p><strong>Nenhuma obra encontrada.</strong></p>
+          <p>Tente outra palavra ou limpe os filtros.</p>
+          <button class="botao" id="limpar-filtros" type="button">Limpar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Detalhe da obra -->
+    <section id="tela-obra" class="tela" hidden></section>
+
+    <!-- Estante: salvos e recentes -->
+    <section id="tela-estante" class="tela" hidden aria-labelledby="titulo-estante">
+      <div class="secao">
+        <h1 id="titulo-estante" class="titulo-tela">Minha estante</h1>
+        <div id="estante-conteudo"></div>
+      </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="tela-sobre" class="tela" hidden aria-labelledby="titulo-sobre">
+      <div class="secao texto-corrido">
+        <h1 id="titulo-sobre" class="titulo-tela">Sobre o app</h1>
+        <div id="sobre-conteudo"></div>
+      </div>
+    </section>
+
+    <div class="carregando" id="carregando" role="status">
+      <div class="carregando__roda" aria-hidden="true"></div>
+      <p>Carregando o acervo…</p>
+    </div>
+  </main>
+
+  <nav class="abas" aria-label="Navegação principal">
+    <a class="aba" href="#/" data-aba="acervo">
+      <svg class="icone" aria-hidden="true"><use href="#i-livros"/></svg><span>Acervo</span>
+    </a>
+    <a class="aba" href="#/estante" data-aba="estante">
+      <svg class="icone" aria-hidden="true"><use href="#i-marcador"/></svg><span>Estante</span>
+    </a>
+    <a class="aba" href="#/sobre" data-aba="sobre">
+      <svg class="icone" aria-hidden="true"><use href="#i-info"/></svg><span>Sobre</span>
+    </a>
+  </nav>
+
+  <div class="aviso" id="aviso" role="status" aria-live="polite" hidden></div>
+
+  <!-- Ícones (traço 2px, 24x24) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-busca" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-fechar" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+      <symbol id="i-livros" viewBox="0 0 24 24"><path d="M4 19.5V5a2 2 0 0 1 2-2h13v15H6.5A2.5 2.5 0 0 0 4 20.5 2.5 2.5 0 0 0 6.5 23H19v-5"/><path d="M8 7h7"/></symbol>
+      <symbol id="i-marcador" viewBox="0 0 24 24"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+      <symbol id="i-marcador-cheio" viewBox="0 0 24 24"><path fill="currentColor" d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></symbol>
+      <symbol id="i-voltar" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+      <symbol id="i-ler" viewBox="0 0 24 24"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></symbol>
+      <symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></symbol>
+      <symbol id="i-externo" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+      <symbol id="i-compartilhar" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></symbol>
+      <symbol id="i-carrinho" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.5L21 8H6"/></symbol>
+    </defs>
+  </svg>
+</body>
+</html>

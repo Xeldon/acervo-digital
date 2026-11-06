@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "Acervo Digital · Livraria do Senado",
+  "short_name": "Acervo Senado",
+  "description": "Obras gratuitas da Livraria do Senado Federal para ler no celular.",
+  "lang": "pt-BR",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f5f8",
+  "theme_color": "#0b2a4a",
+  "icons": [
+    { "src": "icons/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Minha estante", "url": "./#/estante", "icons": [{ "src": "icons/icone-192.png", "sizes": "192x192" }] }
+  ]
+}
